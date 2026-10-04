@@ -539,14 +539,14 @@ a:focus-visible {
 
 .gallery-grid {
     display: grid;
-    grid-template-columns: 1.35fr 0.65fr;
-    grid-template-rows: repeat(2, 250px);
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 220px;
     gap: 14px;
 }
 
 .gallery-placeholder {
     position: relative;
-    min-height: 250px;
+    min-height: 0;
     margin: 0;
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.09);
@@ -560,6 +560,7 @@ a:focus-visible {
 }
 
 .gallery-placeholder-large {
+    grid-column: span 2;
     grid-row: span 2;
 }
 
@@ -594,7 +595,6 @@ a:focus-visible {
     font-size: 11px;
     color: rgba(0, 0, 0, 0.35);
 }
-
 
 /* ---------- Founders ---------- */
 
@@ -1728,4 +1728,26 @@ a:focus-visible {
         font-size: 11px;
     }
 
+}
+
+@media (max-width: 800px) {
+
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 180px;
+        gap: 10px;
+    }
+
+    .gallery-placeholder-large {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+
+}
+
+.gallery-placeholder img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
 }
