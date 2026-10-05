@@ -63,44 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =========================
-       SMOOTH SCROLL
-    ========================= */
-
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-
-        link.addEventListener("click", event => {
-
-            const targetId = link.getAttribute("href");
-
-            if (!targetId || targetId === "#") {
-                return;
-            }
-
-            const target = document.querySelector(targetId);
-
-            if (!target) {
-                return;
-            }
-
-            event.preventDefault();
-
-            const headerHeight = header
-                ? header.offsetHeight
-                : 0;
-
-            const targetPosition =
-                target.getBoundingClientRect().top +
-                window.pageYOffset -
-                headerHeight;
-
-            window.scrollTo({
-                top: targetPosition,
-                behavior: "smooth"
-            });
-        });
-
-    });
 
 
     /* =========================
@@ -247,6 +209,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
             });
 
+    }
+
+
+    /* =========================
+       INFINITE GALLERY SLIDER
+    ========================= */
+    const galleryTrack = document.getElementById("gallery-track");
+    if (galleryTrack) {
+        // İçerideki tüm resimleri al
+        const galleryItems = Array.from(galleryTrack.children);
+
+        // Sorunsuz sonsuz döngü için resimlerin kopyasını listenin sonuna ekle
+        galleryItems.forEach(item => {
+            const clone = item.cloneNode(true);
+            galleryTrack.appendChild(clone);
+        });
     }
 
 });

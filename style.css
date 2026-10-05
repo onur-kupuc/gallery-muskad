@@ -465,6 +465,7 @@ a:focus-visible {
     color: rgba(255, 255, 255, 0.70);
     font-size: clamp(16px, 1.6vw, 19px);
     line-height: 1.65;
+    font-style: italic;
 }
 
 .hero-actions {
@@ -533,67 +534,97 @@ a:focus-visible {
 
 /* ---------- Gallery ---------- */
 
+/* ---------- Gallery (Premium Auto-Slider) ---------- */
+
 .gallery-section {
     overflow: hidden;
+    padding-bottom: 140px;
+    /* Slider aşağıda rahat nefes alsın */
 }
 
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 220px;
-    gap: 14px;
-}
-
-.gallery-placeholder {
+/* Sağdan ve soldan resimlerin silinerek kaybolması için CSS Mask özelliği */
+.gallery-slider-wrapper {
     position: relative;
-    min-height: 0;
-    margin: 0;
+    width: 100%;
+    margin-top: 20px;
     overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, 0.09);
-    background:
-        linear-gradient(135deg, rgba(0, 0, 0, 0.045), rgba(0, 0, 0, 0.015)),
-        repeating-linear-gradient(135deg,
-            transparent 0,
-            transparent 18px,
-            rgba(0, 0, 0, 0.025) 19px,
-            transparent 20px);
+    /* Mobilde ve PC'de kenarlara hafif saydamlık vererek lüks hissi katar */
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
 
-.gallery-placeholder-large {
-    grid-column: span 2;
-    grid-row: span 2;
-}
-
-.placeholder-content {
-    position: absolute;
-    inset: 0;
+.gallery-slider-track {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 7px;
-    text-align: center;
-    color: rgba(0, 0, 0, 0.40);
+    gap: 20px;
+    width: max-content;
+    /* Animasyon: Sonsuz döngü. Süreyi değiştirerek hızı ayarlayabilirsin */
+    animation: scrollGallery 25s linear infinite;
+    will-change: transform;
 }
 
-.placeholder-content span {
-    color: var(--accent);
-    font-family: "Kanit", "Segoe UI", sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.18em;
+/* Kullanıcı fare ile üzerine geldiğinde akışı duraklat */
+.gallery-slider-wrapper:hover .gallery-slider-track {
+    animation-play-state: paused;
 }
 
-.placeholder-content strong {
-    font-family: "Kanit", "Segoe UI", sans-serif;
-    font-size: 18px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
+.gallery-item {
+    position: relative;
+    height: 320px;
+    /* Masaüstü için yüksek resimler */
+    width: 450px;
+    border-radius: 16px;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+    background: rgba(0, 0, 0, 0.05);
 }
 
-.placeholder-content small {
-    font-size: 11px;
-    color: rgba(0, 0, 0, 0.35);
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Fareyle üzerine gelince resim içten hafifçe büyür */
+.gallery-item:hover img {
+    transform: scale(1.08);
+}
+
+/* Animasyon Keyframe'i */
+@keyframes scrollGallery {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(calc(-50% - 10px));
+    }
+
+    /* Yarıya kadar kayar (JS ile kopyaladığımız için kesintisiz döner) */
+}
+
+/* Responsive: Tablet ve Mobil için yükseklik ayarlamaları */
+@media (max-width: 900px) {
+    .gallery-item {
+        height: 260px;
+        width: 360px;
+    }
+}
+
+@media (max-width: 640px) {
+    .gallery-item {
+        height: 220px;
+        width: 300px;
+        border-radius: 12px;
+    }
+
+    .gallery-slider-wrapper {
+        /* Mobilde ekran küçük olduğu için kenar maskesini daraltıyoruz */
+        -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    }
 }
 
 /* ---------- Founders ---------- */
@@ -718,12 +749,69 @@ a:focus-visible {
     color: var(--accent);
 }
 
-.founder-actions {
+/* YENİ GÜÇLÜ İLETİŞİM DÜZENİ */
+.card-contact-grid {
     display: flex;
-    gap: 9px;
+    flex-direction: column;
+    gap: 10px;
     margin-top: 30px;
+    width: 100%;
 }
 
+.contact-card .card-contact-grid {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.btn-full {
+    width: 100%;
+    font-size: 15px;
+    height: 48px;
+    border-color: rgba(255, 178, 28, 0.4);
+}
+
+.btn-full svg {
+    margin-right: 6px;
+}
+
+.social-3col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 178, 28, 0.25);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-muted);
+    transition: all 0.25s ease;
+}
+
+.social-btn:hover {
+    color: var(--white);
+    background: rgba(255, 178, 28, 0.10);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.social-btn.btn-wp {
+    background: var(--accent);
+    color: var(--black);
+    border-color: var(--accent);
+}
+
+.social-btn.btn-wp:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
 
 /* ---------- Authorization ---------- */
 
@@ -1233,12 +1321,15 @@ a:focus-visible {
         max-width: 360px;
         margin-top: 24px;
         font-size: 15px;
+
+
+
     }
 
     .hero-actions {
         flex-direction: column;
         align-items: stretch;
-        margin-top: 30px;
+        margin-top: 200px;
     }
 
     .hero-actions .button {
@@ -1750,4 +1841,24 @@ a:focus-visible {
     height: 100%;
     display: block;
     object-fit: cover;
+}
+
+/* Başlangıç durumu: Gizli ve biraz aşağıda */
+.reveal,
+.hero-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* JS tarafından eklendiğinde: Görünür ve kendi konumunda */
+.reveal.is-visible,
+.hero-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Hero bölümündeki elemanlar için JS'ten gelen gecikme süresi */
+.hero-reveal {
+    transition-delay: var(--hero-delay, 0ms);
 }
